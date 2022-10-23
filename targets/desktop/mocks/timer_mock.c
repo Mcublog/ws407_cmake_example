@@ -12,7 +12,7 @@
 #include <stdbool.h>
 
 #include "utils/timer.h"
-#include "utisl/delay.h"
+#include "utils/delay.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME timer_mock
 #if defined(NDEBUG)

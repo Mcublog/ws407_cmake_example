@@ -27,19 +27,18 @@ include_directories(
     ${DESKTOP_DIR}
     ${IO_MOCK_DIR}
     ${DEBUG_DIR}
-    ${APP_DIR}/utils
+    ${APP_DIR}
+
 )
 
 include_directories(app)
 
 # Add all sources
-set(MOCKS_SOURCES
-    ${IO_MOCK_DIR}/io_mock.c
-    ${MOCKS_DIR}/delay_mock.c
-)
+file(GLOB MOCKS_SOURCES "${IO_MOCK_DIR}/*.c" "${MOCKS_DIR}/*.c")
 
 set(DESKTOP_SOURCES
     ${DESKTOP_DIR}/main.c
+    ${APP_DIR}/application.c
     ${DEBUG_DIR}/log_libs.c
     ${MOCKS_SOURCES}
 )

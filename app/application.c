@@ -5,17 +5,7 @@
 
 
 #include "version.h"
-// #include "usbd_cdc_if.h"
-#if defined(CORE407)
-#include "core407.hpp"
-Core407 sys = Core407();
-#elif defined(GREEN_PILL)
-#include "green_pill.hpp"
-GreenPill sys = GreenPill();
-#else
-#include "system.hpp"
-System sys = System();
-#endif
+#include "utils/delay.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME app
 #if defined(NDEBUG)

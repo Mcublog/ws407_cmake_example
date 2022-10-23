@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "delay.h"
+#include "utils/delay.h"
 #include "io_mock.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME iomock
