@@ -1,0 +1,16 @@
+{
+    "C_Cpp.errorSquiggles": "Disabled",
+    "SES_PROJECT_NAME": "ProjectName",
+    "SES_PROJECT_F407": "${config:SES_PROJECT_NAME}F407",
+    "command-runner.commands": {
+        "Open: SES": "emStudio SES/${config:SES_PROJECT_NAME}.emProject &",
+        "Open: RTT Viewer": "JLinkRTTViewer &"
+    },
+    "doxdocgen.generic.authorEmail": "viacheslav@mcublog.ru",
+    "doxdocgen.generic.authorName": "Viacheslav",
+    "doxdocgen.file.copyrightTag": [
+        "@copyright Viacheslav mcublog (c) {year}"
+    ],
+    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Microsoft, ColumnLimit: 90, IndentWidth: 4, ColumnLimit: 0}",
+    "diffEditor.ignoreTrimWhitespace": false
+}

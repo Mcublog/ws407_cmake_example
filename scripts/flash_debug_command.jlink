@@ -1,0 +1,12 @@
+if SWD
+speed 4000
+Device STM32F407VE
+Con
+erase
+r
+h
+loadfile SeS/Output/Debug/Exe/wls_gsm.hex
+r
+h
+g
+q
