@@ -41,6 +41,22 @@
 					"${workspaceFolder}/build"
 				]
 			}
+		},
+		{
+			"type": "shell",
+			"label": "Debug: Run RTT",
+			"command": "t",
+			"args": [
+				"JLinkRTTClient"
+			],
+			"presentation": {
+				"reveal": "never",
+				"echo": true
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }

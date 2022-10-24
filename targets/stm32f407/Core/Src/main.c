@@ -22,7 +22,16 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "application.h"
+//>>---------------------- Log control
+#define LOG_MODULE_NAME main
+#if defined(NDEBUG)
+#define LOG_MODULE_LEVEL (0)
+#else
+#define LOG_MODULE_LEVEL (3)
+#endif
+#include "log_libs.h"
+//<<----------------------
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -85,7 +94,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  application();
   /* USER CODE END 2 */
 
   /* Infinite loop */

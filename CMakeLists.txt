@@ -35,6 +35,7 @@ set(IO_MOCK_DIR ${DESKTOP_DIR}/io_mock)
 set(MOCKS_DIR ${DESKTOP_DIR}/mocks)
 set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(DEBUG_DIR ${APP_DIR}/debug)
+set(UTILS_DIR ${APP_DIR}/utils)
 # include(CTest)
 # enable_testing()
 
@@ -52,10 +53,13 @@ include_directories(app)
 # Add all sources
 file(GLOB MOCKS_SOURCES "${IO_MOCK_DIR}/*.c" "${MOCKS_DIR}/*.c")
 
+file(GLOB APP_SOURCES "${DEBUG_DIR}/*.c" "${APP_DIR}/*.c")
+
+file(GLOB UTILS_SOURCES "${UTILS_DIR}/*.c")
+
 set(DESKTOP_SOURCES
     ${DESKTOP_DIR}/main.c
-    ${APP_DIR}/application.c
-    ${DEBUG_DIR}/log_libs.c
+    ${APP_SOURCES}
     ${MOCKS_SOURCES}
 )
 
@@ -93,6 +97,9 @@ set(include_path_DIRS
     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
     ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Device/ST/STM32F4xx/Include
     ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Include
+    ${APP_DIR}
+    ${DEBUG_DIR}
+    ${UTILS_DIR}
 )
 
 #
@@ -107,7 +114,7 @@ set(symbols_SYMB
 )
 
 # Executable files
-add_executable(${STM32F407_EXE} ${sources_SRCS})
+add_executable(${STM32F407_EXE} ${sources_SRCS} ${APP_SOURCES} ${UTILS_SOURCES})
 
 # Include paths
 target_include_directories(${STM32F407_EXE} PRIVATE ${include_path_DIRS})
