@@ -10,7 +10,7 @@
  */
 #include <unistd.h>
 
-#include "delay.h"
+#include "utils/delay.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME delay_mock
 #if defined(NDEBUG)

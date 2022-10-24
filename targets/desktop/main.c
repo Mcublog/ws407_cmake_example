@@ -8,8 +8,7 @@
  * @copyright Viacheslav mcublog (c) 2022
  *
  */
-// #include "application.h"
-#include "delay.h"
+#include "application.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME main
 #if defined(NDEBUG)
@@ -23,11 +22,6 @@
 //>>---------------------- Global
 int main(void)
 {
-    // application();
-    while (1)
-    {
-        delay_ms(1000);
-        LOG_INFO("working...");
-    }
+    application();
 }
 //<<----------------------
