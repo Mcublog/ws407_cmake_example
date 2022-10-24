@@ -1,2 +1,4 @@
 build/
 targets/stm32f407/.mxproject
+.vscode/.cortex-debug.peripherals.state.json
+.vscode/.cortex-debug.registers.state.json
