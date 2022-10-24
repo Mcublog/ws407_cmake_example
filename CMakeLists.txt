@@ -76,35 +76,12 @@ set(CPU_PARAMETERS
 
 # Set linker script
 set(linker_script_SRC  ${STM32F407_TARGET_PATH}/STM32F407VETx_FLASH.ld)
-set(EXECUTABLE         ${STM32F407_EXE})
 
 #
 # List of source files to compile
 #
-set(sources_SRCS
-    # Put here your source files, one in each line, relative to CMakeLists.txt file location
-     ${STM32F407_TARGET_PATH}/Core/Src/main.c
-     ${STM32F407_TARGET_PATH}/Core/Src/gpio.c
-     ${STM32F407_TARGET_PATH}/Core/Src/stm32f4xx_it.c
-     ${STM32F407_TARGET_PATH}/Core/Src/stm32f4xx_hal_msp.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
-     ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
-     ${STM32F407_TARGET_PATH}/Core/Src/system_stm32f4xx.c
-     ${STM32F407_TARGET_PATH}/startup_stm32f407xx.s
-)
+# Put here your source files, one in each line, relative to CMakeLists.txt file location
+file(GLOB_RECURSE sources_SRCS ${STM32F407_TARGET_PATH}/*.c ${STM32F407_TARGET_PATH}/*.s)
 
 #
 # Include directories
@@ -130,16 +107,16 @@ set(symbols_SYMB
 )
 
 # Executable files
-add_executable(${EXECUTABLE} ${sources_SRCS})
+add_executable(${STM32F407_EXE} ${sources_SRCS})
 
 # Include paths
-target_include_directories(${EXECUTABLE} PRIVATE ${include_path_DIRS})
+target_include_directories(${STM32F407_EXE} PRIVATE ${include_path_DIRS})
 
 # Project symbols
-target_compile_definitions(${EXECUTABLE} PRIVATE ${symbols_SYMB})
+target_compile_definitions(${STM32F407_EXE} PRIVATE ${symbols_SYMB})
 
 # Compiler options
-target_compile_options(${EXECUTABLE} PRIVATE
+target_compile_options(${STM32F407_EXE} PRIVATE
     ${CPU_PARAMETERS}
     -Wall
     -Wextra
@@ -147,12 +124,13 @@ target_compile_options(${EXECUTABLE} PRIVATE
     -Wno-unused-parameter
     -fdata-sections
     -ffunction-sections
+    -fdiagnostics-color=always
     # Full debug configuration
     -Og -g3 -ggdb
 )
 
 # Linker options
-target_link_options(${EXECUTABLE} PRIVATE
+target_link_options(${STM32F407_EXE} PRIVATE
     -T${linker_script_SRC}
     ${CPU_PARAMETERS}
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map
@@ -169,18 +147,18 @@ target_link_options(${EXECUTABLE} PRIVATE
 )
 
 # # Execute post-build to print size
-# add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-#     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${EXECUTABLE}>
+# add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
+#     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${STM32F407_EXE}>
 # )
 
 # Convert output to hex and binary
-add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.hex
+add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${STM32F407_EXE}> ${STM32F407_EXE}.hex
 )
 
 # Convert to bin file -> add conditional check?
-add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.bin
+add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407_EXE}> ${STM32F407_EXE}.bin
 )
 
 #######

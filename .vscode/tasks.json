@@ -3,10 +3,10 @@
 	"tasks": [
 		{
 			"type": "cmake",
-			"label": "CMake: clean rebuild",
+			"label": "CMake: clean rebuild: ws407_fw",
 			"command": "cleanRebuild",
 			"targets": [
-				"ws407_cmake_example_desktop"
+				"ws407_fw"
 			],
 			"group": "build",
 			"problemMatcher": [],
@@ -14,14 +14,33 @@
 		},
 		{
 			"type": "cmake",
-			"label": "CMake: build",
+			"label": "CMake: clean rebuild: ws407_desktop",
 			"command": "build",
 			"targets": [
-				"ws407_cmake_example_desktop"
+				"ws407_desktop"
 			],
 			"group": "build",
 			"problemMatcher": [],
 			"detail": "CMake template build task"
+		},
+		{
+			"type": "shell",
+			"label": "Build Project",
+			"command": "cmake --build . --config Debug  --target ws407_fw --clean-first",
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": {
+				"base": "$gcc",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}/build"
+				]
+			}
 		}
 	]
 }
