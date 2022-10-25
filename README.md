@@ -15,7 +15,7 @@ sudo tar xjf gcc-arm-none-eabi-your-version.bz2 -C /usr/share/
 ```
 
 ```bash
-# setting simlink
+# setting symlink
 sudo ln -s /usr/share/gcc-arm-none-eabi-your-version/bin/* /usr/bin/
 ```
 
