@@ -9,14 +9,13 @@ set(CMAKE_CXX_STANDARD              20)
 set(CMAKE_CXX_STANDARD_REQUIRED     ON)
 set(CMAKE_CXX_EXTENSIONS            ON)
 
-set(STM32F407_TARGET_PATH           ${CMAKE_CURRENT_SOURCE_DIR}/targets/stm32f407)
-set(STM32F407_EXE                   ws407_fw)
+set(STM32F407F_TARGET               ws407_fw)
 set(DESKTOP_TARGET                  ws407_desktop)
 
-# region APP GLOBAL PROPERTY
-set(DESKTOP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
-set(IO_MOCK_DIR ${DESKTOP_DIR}/io_mock)
-set(MOCKS_DIR ${DESKTOP_DIR}/mocks)
+# region GLOBAL PROPERTIES
+set(STM32F407_TARGET_PATH           ${CMAKE_CURRENT_SOURCE_DIR}/targets/stm32f407)
+set(DESKTOP_TARGET_PATH             ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
+
 set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(DEBUG_DIR ${APP_DIR}/debug)
 set(UTILS_DIR ${APP_DIR}/utils)
@@ -28,6 +27,9 @@ set(APP_DIRS
 )
 
 set_property(GLOBAL PROPERTY APP_INCLUDE_DIRS_PROPERTY ${APP_DIRS})
+
+set(IO_MOCK_DIR ${DESKTOP_TARGET_PATH}/io_mock)
+set(MOCKS_DIR ${DESKTOP_TARGET_PATH}/mocks)
 
 set_property(GLOBAL PROPERTY DESKTOP_INCLUDE_DIR
     ${DESKTOP_DIR}
@@ -49,9 +51,10 @@ set_property(GLOBAL PROPERTY HAL_INCLUDE_DIRS_PROPERTY ${HAL_INCLUDE_DIRS})
 # endregion
 
 # region MCU GLOBAL PROPERTY
+
+# Put here your symbols (preprocessor defines), one in each line
+# Encapsulate them with double quotes for safety purpose
 set(symbols_SYMB
-    # Put here your symbols (preprocessor defines), one in each line
-    # Encapsulate them with double quotes for safety purpose
     "DEBUG"
     "USE_HAL_DRIVER"
     "STM32F407xx"
@@ -107,7 +110,7 @@ add_definitions(-D_WINDOWS_)
 # region DESKTOP APP
 
 # Buid DESKTOP target
-add_executable(${DESKTOP_TARGET} ${DESKTOP_DIR}/main.c)
+add_executable(${DESKTOP_TARGET} ${DESKTOP_TARGET_PATH}/main.c)
 
 # Link libs
 target_link_libraries(${DESKTOP_TARGET} app)
@@ -129,25 +132,25 @@ target_include_directories(${DESKTOP_TARGET} PRIVATE
 set(linker_script_SRC ${STM32F407_TARGET_PATH}/STM32F407VETx_FLASH.ld)
 
 # Executable files
-add_executable(${STM32F407_EXE} ${STM32F407_TARGET_PATH}/Core/Src/main.c)
+add_executable(${STM32F407F_TARGET} ${STM32F407_TARGET_PATH}/Core/Src/main.c)
 
 # Link libs
-target_link_libraries(${STM32F407_EXE} app_fw)
-target_link_libraries(${STM32F407_EXE} hal)
+target_link_libraries(${STM32F407F_TARGET} app_fw)
+target_link_libraries(${STM32F407F_TARGET} hal)
 
 # Include paths
-target_include_directories(${STM32F407_EXE} PRIVATE
+target_include_directories(${STM32F407F_TARGET} PRIVATE
     ${HAL_INCLUDE_DIRS}
     ${APP_DIRS}
 )
 
 # Project symbols
-target_compile_definitions(${STM32F407_EXE} PRIVATE ${symbols_SYMB})
+target_compile_definitions(${STM32F407F_TARGET} PRIVATE ${symbols_SYMB})
 
 # Compiler options
-target_compile_options(${STM32F407_EXE} PRIVATE ${ARM_NONE_EABI_FLAGS})
+target_compile_options(${STM32F407F_TARGET} PRIVATE ${ARM_NONE_EABI_FLAGS})
 # Linker options
-target_link_options(${STM32F407_EXE} PRIVATE
+target_link_options(${STM32F407F_TARGET} PRIVATE
     -T${linker_script_SRC}
     ${CPU_PARAMETERS}
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map
@@ -164,18 +167,17 @@ target_link_options(${STM32F407_EXE} PRIVATE
 )
 
 # # Execute post-build to print size
-# add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
-#     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${STM32F407_EXE}>
-# )
+# add_custom_command(TARGET ${STM32F407F_TARGETST_BUILD
+#     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${STM32F407F_TARGET )
 
 # Convert output to hex and binary
-add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${STM32F407_EXE}> ${STM32F407_EXE}.hex
+add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.hex
 )
 
 # Convert to bin file -> add conditional check?
-add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407_EXE}> ${STM32F407_EXE}.bin
+add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.bin
 )
 # endregion
 
