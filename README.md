@@ -4,9 +4,9 @@ STM32 Cmake example
 
 ![building](/doc/Peek_2022-10-25_21-34.gif)
 
-## Installing toolchaine
+## Installing toolchain
 
-Download tar.bz2 with toolchaine from [Arm site](https://developer.arm.com/downloads/-/gnu-rm)
+Download tar.bz2 with toolchain from [Arm site](https://developer.arm.com/downloads/-/gnu-rm)
 Unzip it to /usr/share
 
 ```bash
