@@ -12,12 +12,41 @@ set(CMAKE_CXX_EXTENSIONS            ON)
 set(STM32F407_TARGET_PATH           ${CMAKE_CURRENT_SOURCE_DIR}/targets/stm32f407)
 set(STM32F407_EXE                   ws407_fw)
 set(DESKTOP_TARGET                  ws407_desktop)
+
+# region  GLOBAL PROPERTY
+#
+# Core MCU flags, CPU, instruction set and FPU setup
+# Needs to be set properly for your MCU
+#
+set(CPU_PARAMETERS -mthumb
+    # This needs attention to properly set for used MCU
+    -mcpu=cortex-m4
+    -mfpu=fpv5-d16
+    -mfloat-abi=hard)
+
+set(ARM_NONE_EABI_FLAGS
+    ${CPU_PARAMETERS}
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Wno-unused-parameter
+    -fdata-sections
+    -ffunction-sections
+    -fdiagnostics-color=always
+    # Full debug configuration
+    -Og -g3 -ggdb
+)
+
+set_property(GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY
+    ${CPU_PARAMETERS}
+    ${ARM_NONE_EABI_FLAGS}
+)
+#
+# endregion
+
 message("Build type: "              ${CMAKE_BUILD_TYPE})
 
-
-project(ws407_cmake_example VERSION 0.0.1)
-enable_language(ASM)
-
+project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
 
 # Added color compiler output
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -47,46 +76,29 @@ include_directories(
     ${APP_DIR}
 
 )
-
+add_subdirectory(app)
 include_directories(app)
 
 # Add all sources
 file(GLOB MOCKS_SOURCES "${IO_MOCK_DIR}/*.c" "${MOCKS_DIR}/*.c")
 
-file(GLOB APP_SOURCES "${DEBUG_DIR}/*.c" "${APP_DIR}/*.c")
-
-file(GLOB UTILS_SOURCES "${UTILS_DIR}/*.c")
 
 set(DESKTOP_SOURCES
     ${DESKTOP_DIR}/main.c
-    ${APP_SOURCES}
     ${MOCKS_SOURCES}
 )
 
 add_executable(${DESKTOP_TARGET} ${DESKTOP_SOURCES})
-
-#
-# Core MCU flags, CPU, instruction set and FPU setup
-# Needs to be set properly for your MCU
-#
-set(CPU_PARAMETERS
-    -mthumb
-    # This needs attention to properly set for used MCU
-    -mcpu=cortex-m4
-    -mfpu=fpv5-d16
-    -mfloat-abi=hard
-
-)
+# The executable code is here
+target_link_libraries(${DESKTOP_TARGET} app)
 
 # Set linker script
-set(linker_script_SRC  ${STM32F407_TARGET_PATH}/STM32F407VETx_FLASH.ld)
-
+set(linker_script_SRC ${STM32F407_TARGET_PATH}/STM32F407VETx_FLASH.ld)
 #
 # List of source files to compile
 #
 # Put here your source files, one in each line, relative to CMakeLists.txt file location
 file(GLOB_RECURSE sources_SRCS ${STM32F407_TARGET_PATH}/*.c ${STM32F407_TARGET_PATH}/*.s)
-
 #
 # Include directories
 #
@@ -114,7 +126,9 @@ set(symbols_SYMB
 )
 
 # Executable files
-add_executable(${STM32F407_EXE} ${sources_SRCS} ${APP_SOURCES} ${UTILS_SOURCES})
+add_executable(${STM32F407_EXE} ${sources_SRCS} ${UTILS_SOURCES})
+# The executable code is here
+target_link_libraries(${STM32F407_EXE} app_fw)
 
 # Include paths
 target_include_directories(${STM32F407_EXE} PRIVATE ${include_path_DIRS})
@@ -123,19 +137,7 @@ target_include_directories(${STM32F407_EXE} PRIVATE ${include_path_DIRS})
 target_compile_definitions(${STM32F407_EXE} PRIVATE ${symbols_SYMB})
 
 # Compiler options
-target_compile_options(${STM32F407_EXE} PRIVATE
-    ${CPU_PARAMETERS}
-    -Wall
-    -Wextra
-    -Wpedantic
-    -Wno-unused-parameter
-    -fdata-sections
-    -ffunction-sections
-    -fdiagnostics-color=always
-    # Full debug configuration
-    -Og -g3 -ggdb
-)
-
+target_compile_options(${STM32F407_EXE} PRIVATE "${ARM_NONE_EABI_FLAGS}")
 # Linker options
 target_link_options(${STM32F407_EXE} PRIVATE
     -T${linker_script_SRC}
