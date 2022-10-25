@@ -13,11 +13,54 @@ set(STM32F407_TARGET_PATH           ${CMAKE_CURRENT_SOURCE_DIR}/targets/stm32f40
 set(STM32F407_EXE                   ws407_fw)
 set(DESKTOP_TARGET                  ws407_desktop)
 
-# region  GLOBAL PROPERTY
-#
-# Core MCU flags, CPU, instruction set and FPU setup
-# Needs to be set properly for your MCU
-#
+# region APP GLOBAL PROPERTY
+set(DESKTOP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
+set(IO_MOCK_DIR ${DESKTOP_DIR}/io_mock)
+set(MOCKS_DIR ${DESKTOP_DIR}/mocks)
+set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
+set(DEBUG_DIR ${APP_DIR}/debug)
+set(UTILS_DIR ${APP_DIR}/utils)
+
+set(APP_DIRS
+    ${APP_DIR}
+    ${DEBUG_DIR}
+    ${UTILS_DIR}
+)
+
+set_property(GLOBAL PROPERTY APP_INCLUDE_DIRS_PROPERTY ${APP_DIRS})
+
+set_property(GLOBAL PROPERTY DESKTOP_INCLUDE_DIR
+    ${DESKTOP_DIR}
+    ${IO_MOCK_DIR}
+    ${MOCKS_DIR}
+    ${APP_DIRS}
+)
+
+set(HAL_INCLUDE_DIRS
+    # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
+    ${STM32F407_TARGET_PATH}/Core/Inc
+    ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc
+    ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
+    ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+    ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Include
+)
+
+set_property(GLOBAL PROPERTY HAL_INCLUDE_DIRS_PROPERTY ${HAL_INCLUDE_DIRS})
+# endregion
+
+# region MCU GLOBAL PROPERTY
+set(symbols_SYMB
+    # Put here your symbols (preprocessor defines), one in each line
+    # Encapsulate them with double quotes for safety purpose
+    "DEBUG"
+    "USE_HAL_DRIVER"
+    "STM32F407xx"
+)
+
+set_property(GLOBAL PROPERTY STM32_DEFINES_PROPERTY
+    ${symbols_SYMB}
+)
+
 set(CPU_PARAMETERS -mthumb
     # This needs attention to properly set for used MCU
     -mcpu=cortex-m4
@@ -38,15 +81,17 @@ set(ARM_NONE_EABI_FLAGS
 )
 
 set_property(GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY
-    ${CPU_PARAMETERS}
     ${ARM_NONE_EABI_FLAGS}
 )
-#
 # endregion
+
 
 message("Build type: "              ${CMAKE_BUILD_TYPE})
 
 project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
+
+add_subdirectory(app)
+add_subdirectory(targets)
 
 # Added color compiler output
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -59,85 +104,48 @@ endif()
 add_definitions(-DprojCOVERAGE_TEST=0)
 add_definitions(-D_WINDOWS_)
 
-set(DESKTOP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
-set(IO_MOCK_DIR ${DESKTOP_DIR}/io_mock)
-set(MOCKS_DIR ${DESKTOP_DIR}/mocks)
-set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
-set(DEBUG_DIR ${APP_DIR}/debug)
-set(UTILS_DIR ${APP_DIR}/utils)
-# include(CTest)
-# enable_testing()
+# region DESKTOP APP
 
-# Add includes dir
-include_directories(
+# Buid DESKTOP target
+add_executable(${DESKTOP_TARGET} ${DESKTOP_DIR}/main.c)
+
+# Link libs
+target_link_libraries(${DESKTOP_TARGET} app)
+target_link_libraries(${DESKTOP_TARGET} mocks)
+
+# Include paths
+target_include_directories(${DESKTOP_TARGET} PRIVATE
     ${DESKTOP_DIR}
     ${IO_MOCK_DIR}
     ${DEBUG_DIR}
     ${APP_DIR}
-
 )
-add_subdirectory(app)
-include_directories(app)
-
-# Add all sources
-file(GLOB MOCKS_SOURCES "${IO_MOCK_DIR}/*.c" "${MOCKS_DIR}/*.c")
+# endregion
 
 
-set(DESKTOP_SOURCES
-    ${DESKTOP_DIR}/main.c
-    ${MOCKS_SOURCES}
-)
-
-add_executable(${DESKTOP_TARGET} ${DESKTOP_SOURCES})
-# The executable code is here
-target_link_libraries(${DESKTOP_TARGET} app)
+# region F407 FW
 
 # Set linker script
 set(linker_script_SRC ${STM32F407_TARGET_PATH}/STM32F407VETx_FLASH.ld)
-#
-# List of source files to compile
-#
-# Put here your source files, one in each line, relative to CMakeLists.txt file location
-file(GLOB_RECURSE sources_SRCS ${STM32F407_TARGET_PATH}/*.c ${STM32F407_TARGET_PATH}/*.s)
-#
-# Include directories
-#
-set(include_path_DIRS
-    # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
-    ${STM32F407_TARGET_PATH}/Core/Inc
-    ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc
-    ${STM32F407_TARGET_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
-    ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Device/ST/STM32F4xx/Include
-    ${STM32F407_TARGET_PATH}/Drivers/CMSIS/Include
-    ${APP_DIR}
-    ${DEBUG_DIR}
-    ${UTILS_DIR}
-)
-
-#
-# Symbols definition
-#
-set(symbols_SYMB
-    # Put here your symbols (preprocessor defines), one in each line
-    # Encapsulate them with double quotes for safety purpose
-    "DEBUG"
-    "USE_HAL_DRIVER"
-    "STM32F407xx"
-)
 
 # Executable files
-add_executable(${STM32F407_EXE} ${sources_SRCS} ${UTILS_SOURCES})
-# The executable code is here
+add_executable(${STM32F407_EXE} ${STM32F407_TARGET_PATH}/Core/Src/main.c)
+
+# Link libs
 target_link_libraries(${STM32F407_EXE} app_fw)
+target_link_libraries(${STM32F407_EXE} hal)
 
 # Include paths
-target_include_directories(${STM32F407_EXE} PRIVATE ${include_path_DIRS})
+target_include_directories(${STM32F407_EXE} PRIVATE
+    ${HAL_INCLUDE_DIRS}
+    ${APP_DIRS}
+)
 
 # Project symbols
 target_compile_definitions(${STM32F407_EXE} PRIVATE ${symbols_SYMB})
 
 # Compiler options
-target_compile_options(${STM32F407_EXE} PRIVATE "${ARM_NONE_EABI_FLAGS}")
+target_compile_options(${STM32F407_EXE} PRIVATE ${ARM_NONE_EABI_FLAGS})
 # Linker options
 target_link_options(${STM32F407_EXE} PRIVATE
     -T${linker_script_SRC}
@@ -169,8 +177,8 @@ add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
 add_custom_command(TARGET ${STM32F407_EXE} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407_EXE}> ${STM32F407_EXE}.bin
 )
+# endregion
 
-#######
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
