@@ -14,7 +14,8 @@
     "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Microsoft, ColumnLimit: 90, IndentWidth: 4, ColumnLimit: 0}",
     "diffEditor.ignoreTrimWhitespace": false,
     "conventionalCommits.scopes": [
-        "mcu"
+        "mcu",
+        "desktop"
     ],
     "files.associations": {
         "common_type.h": "c"
