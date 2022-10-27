@@ -7,9 +7,9 @@
         {
             "type": "cortex-debug",
             "request": "launch",
-            "name": "Debug J-Link",
+            "name": "Debug: ws407_fw",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/ws407_fw",
+            "executable": "${workspaceRoot}/build/targets/stm32f407/ws407_fw",
             "servertype": "jlink",
             "device": "STM32F407VE",
             "interface": "swd",
