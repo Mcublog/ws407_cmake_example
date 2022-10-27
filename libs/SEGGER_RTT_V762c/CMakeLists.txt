@@ -22,5 +22,3 @@ target_compile_definitions(${RTT_LIB} PRIVATE ${symbols_SYMB})
 # Compiler options
 target_compile_options(${RTT_LIB} PRIVATE ${ARM_NONE_EABI_FLAGS})
 
-# # Linker options
-# target_link_options(${STM32F407_TARGET} PRIVATE ${STM32F407_LINKER_OPTION})

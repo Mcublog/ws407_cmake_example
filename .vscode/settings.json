@@ -15,5 +15,8 @@
     "diffEditor.ignoreTrimWhitespace": false,
     "conventionalCommits.scopes": [
         "mcu"
-    ]
+    ],
+    "files.associations": {
+        "common_type.h": "c"
+    }
 }

@@ -23,6 +23,7 @@ project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
 add_subdirectory(app)
 add_subdirectory(targets)
 add_subdirectory(libs)
+add_subdirectory(test)
 
 # Added color compiler output
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -60,7 +61,13 @@ target_include_directories(${STM32F407F_TARGET} PRIVATE
 
 # endregion
 
+# region Tests
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+# Added app lib
+target_link_libraries(${COMMON_TYPES_TARGET} app)
+
+add_test(NAME common_types_test
+         COMMAND common_types_test)
+
+enable_testing()
+# endregion
