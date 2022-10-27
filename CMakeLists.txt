@@ -9,10 +9,9 @@ set(CMAKE_CXX_STANDARD              20)
 set(CMAKE_CXX_STANDARD_REQUIRED     ON)
 set(CMAKE_CXX_EXTENSIONS            ON)
 
-set(DESKTOP_TARGET                  ws407_desktop)
-
 include(config/common.cmake)
-include(config/mcu_config.cmake)
+include(config/mcu.cmake)
+include(config/desktop.cmake)
 # endregion
 
 message("Build type: "              ${CMAKE_BUILD_TYPE})
@@ -37,18 +36,11 @@ add_definitions(-D_WINDOWS_)
 
 # region DESKTOP APP
 
-# Buid DESKTOP target
-add_executable(${DESKTOP_TARGET} ${DESKTOP_TARGET_PATH}/main.c)
-
 # Link libs
 target_link_libraries(${DESKTOP_TARGET} app)
-target_link_libraries(${DESKTOP_TARGET} mocks)
 
 # Include paths
 target_include_directories(${DESKTOP_TARGET} PRIVATE
-    ${DESKTOP_DIR}
-    ${IO_MOCK_DIR}
-    ${DEBUG_DIR}
     ${APP_DIR}
 )
 # endregion
