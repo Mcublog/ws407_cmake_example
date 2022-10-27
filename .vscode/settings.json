@@ -12,5 +12,8 @@
         "@copyright Viacheslav mcublog (c) {year}"
     ],
     "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Microsoft, ColumnLimit: 90, IndentWidth: 4, ColumnLimit: 0}",
-    "diffEditor.ignoreTrimWhitespace": false
+    "diffEditor.ignoreTrimWhitespace": false,
+    "conventionalCommits.scopes": [
+        "mcu"
+    ]
 }

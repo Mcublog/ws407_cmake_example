@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD              20)
 set(CMAKE_CXX_STANDARD_REQUIRED     ON)
 set(CMAKE_CXX_EXTENSIONS            ON)
 
-set(STM32F407F_TARGET               ws407_fw)
 set(DESKTOP_TARGET                  ws407_desktop)
 
 include(config/common.cmake)
@@ -17,6 +16,8 @@ include(config/mcu_config.cmake)
 # endregion
 
 message("Build type: "              ${CMAKE_BUILD_TYPE})
+message("Desktop target: "          ${DESKTOP_TARGET})
+message("MCU target: "              ${STM32F407F_TARGET})
 
 project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
 
@@ -52,43 +53,16 @@ target_include_directories(${DESKTOP_TARGET} PRIVATE
 )
 # endregion
 
+# region STM32F407F_TARGET
 
-# region F407 FW
-
-# Executable files
-add_executable(${STM32F407F_TARGET} ${STM32F407_TARGET_PATH}/Core/Src/main.c)
-
-# Link libs
+# Added app lib
 target_link_libraries(${STM32F407F_TARGET} app_fw)
-target_link_libraries(${STM32F407F_TARGET} hal)
 
 # Include paths
 target_include_directories(${STM32F407F_TARGET} PRIVATE
-    ${HAL_INCLUDE_DIRS}
     ${APP_DIRS}
 )
 
-# Project symbols
-target_compile_definitions(${STM32F407F_TARGET} PRIVATE ${symbols_SYMB})
-
-# Compiler options
-target_compile_options(${STM32F407F_TARGET} PRIVATE ${ARM_NONE_EABI_FLAGS})
-# Linker options
-target_link_options(${STM32F407F_TARGET} PRIVATE ${STM32F407_LINKER_OPTION})
-
-# # Execute post-build to print size
-# add_custom_command(TARGET ${STM32F407F_TARGETST_BUILD
-#     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${STM32F407F_TARGET )
-
-# Convert output to hex and binary
-add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.hex
-)
-
-# Convert to bin file -> add conditional check?
-add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.bin
-)
 # endregion
 
 
