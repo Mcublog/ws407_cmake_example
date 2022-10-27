@@ -5,7 +5,7 @@ Con
 erase
 r
 h
-loadfile SeS/Output/Debug/Exe/wls_gsm.hex
+loadfile build/targets/stm32f407/ws407_fw.hex
 r
 h
 g
