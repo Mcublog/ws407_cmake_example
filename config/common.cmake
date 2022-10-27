@@ -5,6 +5,7 @@ set(DESKTOP_TARGET_PATH             ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
 set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(DEBUG_DIR ${APP_DIR}/debug)
 set(UTILS_DIR ${APP_DIR}/utils)
+set(LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 set(APP_DIRS
     ${APP_DIR}
@@ -24,6 +25,7 @@ set_property(GLOBAL PROPERTY DESKTOP_INCLUDE_DIR
     ${APP_DIRS}
 )
 
+# region HAL
 set(HAL_INCLUDE_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${STM32F407_TARGET_PATH}/Core/Inc
@@ -34,3 +36,17 @@ set(HAL_INCLUDE_DIRS
 )
 
 set_property(GLOBAL PROPERTY HAL_INCLUDE_DIRS_PROPERTY ${HAL_INCLUDE_DIRS})
+# endregion
+
+# region RTT
+set(RTT_LIB rtt)
+set(RTT_VERSION SEGGER_RTT_V762c)
+set(RTT_DIR ${LIBS_DIR}/${RTT_VERSION})
+set(RTT_INCLUDE_DIRS
+    ${RTT_DIR}/Config
+    ${RTT_DIR}/RTT)
+set_property(GLOBAL PROPERTY RTT_LIB_NAME_PROPERTY ${RTT_LIB})
+set_property(GLOBAL PROPERTY RTT_VERSION_PROPERTY ${RTT_VERSION})
+set_property(GLOBAL PROPERTY RTT_INCLUDES_PROPERTY ${RTT_INCLUDE_DIRS})
+
+# endregion

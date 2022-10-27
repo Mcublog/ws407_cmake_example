@@ -47,7 +47,7 @@ set(STM32F407_LINKER_OPTION
     -T${STM32F407_LINKER_SCRIPT}
     ${CPU_PARAMETERS}
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map
-    -specs=nano.specs
+    -specs=nosys.specs
     -u _printf_float                # STDIO float formatting support
     -Wl,--start-group
     -lc

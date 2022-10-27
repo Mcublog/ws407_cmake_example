@@ -22,6 +22,7 @@ project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
 
 add_subdirectory(app)
 add_subdirectory(targets)
+add_subdirectory(libs)
 
 # Added color compiler output
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -49,10 +50,12 @@ target_include_directories(${DESKTOP_TARGET} PRIVATE
 
 # Added app lib
 target_link_libraries(${STM32F407F_TARGET} app_fw)
+target_link_libraries(${STM32F407F_TARGET} rtt)
 
 # Include paths
 target_include_directories(${STM32F407F_TARGET} PRIVATE
     ${APP_DIRS}
+    ${RTT_INCLUDE_DIRS}
 )
 
 # endregion
