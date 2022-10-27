@@ -5,12 +5,14 @@ set(DESKTOP_TARGET_PATH             ${CMAKE_CURRENT_SOURCE_DIR}/targets/desktop)
 set(APP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(DEBUG_DIR ${APP_DIR}/debug)
 set(UTILS_DIR ${APP_DIR}/utils)
+set(IO_DIR ${APP_DIR}/io)
 set(LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 set(APP_DIRS
     ${APP_DIR}
     ${DEBUG_DIR}
     ${UTILS_DIR}
+    ${IO_DIR}
 )
 
 set_property(GLOBAL PROPERTY APP_INCLUDE_DIRS_PROPERTY ${APP_DIRS})
