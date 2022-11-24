@@ -20,7 +20,7 @@ message("Build type: "              ${CMAKE_BUILD_TYPE})
 message("Desktop target: "          ${DESKTOP_TARGET})
 message("MCU target: "              ${STM32F407F_TARGET})
 
-project(ws407_cmake_example VERSION 0.0.1 LANGUAGES C CXX ASM)
+project(ws407_cmake_example VERSION 0.3.0 LANGUAGES C CXX ASM)
 
 add_subdirectory(app)
 add_subdirectory(targets)
