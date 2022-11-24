@@ -27,12 +27,10 @@ target_compile_options(${STM32F407_TARGET} PRIVATE ${ARM_NONE_EABI_FLAGS})
 # Linker options
 target_link_options(${STM32F407_TARGET} PRIVATE ${STM32F407_LINKER_OPTION})
 
-# Convert output to hex and binary
-add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.hex
-)
-
-# Convert to bin file -> add conditional check?
-add_custom_command(TARGET ${STM32F407F_TARGET} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${STM32F407F_TARGET}>$ ${STM32F407F_TARGET}.bin
+# # Convert output to hex and binary
+add_custom_command(TARGET ${STM32F407F_TARGET}
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex -I elf32-littlearm ${STM32F407F_TARGET} ${STM32F407F_TARGET}.hex
+    COMMAND ${CMAKE_OBJCOPY} ARGS -O binary -I elf32-littlearm ${STM32F407F_TARGET} ${STM32F407F_TARGET}.bin
 )

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
+set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
+
 # Setup compiler settings
 set(CMAKE_TRY_COMPILE_TARGET_TYPE   "STATIC_LIBRARY")
 set(CMAKE_C_STANDARD                11)
