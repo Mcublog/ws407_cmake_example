@@ -8,7 +8,8 @@ set_property(GLOBAL PROPERTY STM32F407_TARGET_NAME_PROPERTY
 # Put here your symbols (preprocessor defines), one in each line
 # Encapsulate them with double quotes for safety purpose
 set(symbols_SYMB
-    "DEBUG"
+    $<$<CONFIG:DEBUG>:"DEBUG">
+    $<$<CONFIG:RELASE>:"NDEBUG">
     "USE_HAL_DRIVER"
     "STM32F407xx"
 )
@@ -33,7 +34,11 @@ set(ARM_NONE_EABI_FLAGS
     -ffunction-sections
     -fdiagnostics-color=always
     # Full debug configuration
-    -Og -g3 -ggdb
+    $<$<CONFIG:DEBUG>: -Og -g3 -ggdb>
+    # Release
+    $<$<CONFIG:RELEASE>:-Os -s>
+    # Release with DEBUG
+    $<$<CONFIG:RelWithDebInfo>:-Os -g3 -ggdb>
 )
 
 set_property(GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY
