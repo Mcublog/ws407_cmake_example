@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  container-build-job:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: build
+    container:
+      image: mcublog/embedded_gcc_cmake:latest
+      volumes:
+        - build:/build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cmake version
+        run: cmake --version
+      - name: GCC version
+        run: arm-none-eabi-gcc --version
+      - name: Configure
+        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=arm-none-eabi-gcc ..
+      - name: Build
+        run: cd build && make ws407_fw
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ws407_fw
+      #     path: build/targets/stm32f407/ws407_fw.hex
+  # job2:
+  #     runs-on: ubuntu-latest
+  #     needs: container-build-job
+  #     steps:
+  #       - run: echo ${{needs.container-build-job.outputs.output1}}
+  #       - run: ls build
