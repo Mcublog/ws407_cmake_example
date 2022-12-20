@@ -1,29 +1,43 @@
 name: CI
 
-on:
-  push:
-    branches: [ develop ]
+on: workflow_dispatch
+
 jobs:
-  container-build-job:
+  test-job:
     runs-on: ubuntu-latest
-    outputs:
-      output1: build
+    container:
+      image: mcublog/embedded_gcc_cmake:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cmake version
+        run: cmake --version
+      - name: GCC version
+        run: gcc --version
+      - name: Configure
+        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc ..
+      - name: Build and Run Tests
+        run: cd build && make common_types_test && ctest --output-junit results.xml
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: 'build/*.xml'
+
+  build-job:
+    needs: test-job
+    runs-on: ubuntu-latest
     container:
       image: mcublog/embedded_gcc_cmake:latest
       volumes:
         - build:/build
     steps:
       - uses: actions/checkout@v3
-      - name: Cmake version
-        run: cmake --version
-      - name: GCC version
+      - name: ARM GCC version
         run: arm-none-eabi-gcc --version
       - name: Configure
         run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=arm-none-eabi-gcc ..
-      - name: Build
+      - name: Build and Run Tests
         run: cd build && make ws407_fw
-      - name: LS build
-        run: ls build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
