@@ -22,7 +22,7 @@ include(config/desktop.cmake)
 include(config/utils.cmake)
 # endregion
 
-project(ws407_cmake_example VERSION 0.3.0 LANGUAGES C CXX ASM)
+project(ws407_cmake_example VERSION 0.4.0 LANGUAGES C CXX ASM)
 
 LOG_INFO("Version:.........." ${CMAKE_PROJECT_VERSION})
 LOG_INFO("Host system:......" ${CMAKE_SYSTEM_NAME})
