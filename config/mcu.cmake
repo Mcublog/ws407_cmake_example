@@ -1,10 +1,6 @@
 # region MCU GLOBAL PROPERTY
 set(STM32F407F_TARGET               ws407_fw)
 
-set_property(GLOBAL PROPERTY STM32F407_TARGET_NAME_PROPERTY
-    ${STM32F407F_TARGET}
-)
-
 # Put here your symbols (preprocessor defines), one in each line
 # Encapsulate them with double quotes for safety purpose
 set(symbols_SYMB
@@ -41,17 +37,14 @@ set(ARM_NONE_EABI_FLAGS
     $<$<CONFIG:RelWithDebInfo>:-Os -g3 -ggdb>
 )
 
-set_property(GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY
-    ${ARM_NONE_EABI_FLAGS}
-)
-
 # Set linker script
-set(STM32F407_LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/targets/stm32f407/STM32F407VETx_FLASH.ld)
+set(STM32F407_LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/targets/stm32f407/STM32F407VETx_FLASH.ld)
 
 set(STM32F407_LINKER_OPTION
     -T${STM32F407_LINKER_SCRIPT}
     ${CPU_PARAMETERS}
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map
+    -specs=nano.specs
     -specs=nosys.specs
     -u _printf_float                # STDIO float formatting support
     -Wl,--start-group

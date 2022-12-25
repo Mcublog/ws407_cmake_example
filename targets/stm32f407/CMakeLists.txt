@@ -1,33 +1,28 @@
-# Get target name
-get_property(STM32F407_TARGET GLOBAL PROPERTY STM32F407_TARGET_NAME_PROPERTY)
-get_property(RTT_LIB GLOBAL PROPERTY RTT_LIB_NAME_PROPERTY)
-# GET DEFINES
-get_property(symbols_SYMB GLOBAL PROPERTY STM32_DEFINES_PROPERTY)
-# Get inlcudes
-get_property(INCLUDE_DIRS GLOBAL PROPERTY HAL_INCLUDE_DIRS_PROPERTY)
-get_property(RTT_DIRS GLOBAL PROPERTY RTT_INCLUDES_PROPERTY)
-get_property(APP_INCLUDE_DIRS GLOBAL PROPERTY APP_INCLUDE_DIRS_PROPERTY)
-# Get compiler options
-get_property(ARM_NONE_EABI_FLAGS GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY)
+include(${PROJECT_SOURCE_DIR}/config/common.cmake)
+include(${PROJECT_SOURCE_DIR}/config/mcu.cmake)
 
 # Add sources
-file(GLOB_RECURSE HAL_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/*.s")
+file(GLOB_RECURSE HAL_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.s
+)
 
 # Build lib
-add_executable(${STM32F407_TARGET} ${HAL_SOURCES})
-add_dependencies(${STM32F407_TARGET} ${RTT_LIB})
+add_executable(${STM32F407F_TARGET} ${HAL_SOURCES})
+add_dependencies(${STM32F407F_TARGET} ${RTT_LIB})
+add_dependencies(${STM32F407F_TARGET} ${APP_FW})
 
 # Include paths
-target_include_directories(${STM32F407_TARGET} PRIVATE ${INCLUDE_DIRS} ${APP_INCLUDE_DIRS} ${RTT_DIRS})
+target_include_directories(${STM32F407F_TARGET} PRIVATE ${HAL_INCLUDE_DIRS} ${APP_DIRS} ${RTT_INCLUDE_DIRS})
 
 # Project symbols
-target_compile_definitions(${STM32F407_TARGET} PRIVATE ${symbols_SYMB})
+target_compile_definitions(${STM32F407F_TARGET} PRIVATE ${symbols_SYMB})
 
 # Compiler options
-target_compile_options(${STM32F407_TARGET} PRIVATE ${ARM_NONE_EABI_FLAGS})
+target_compile_options(${STM32F407F_TARGET} PRIVATE ${ARM_NONE_EABI_FLAGS})
 
 # Linker options
-target_link_options(${STM32F407_TARGET} PRIVATE ${STM32F407_LINKER_OPTION})
+target_link_options(${STM32F407F_TARGET} PRIVATE ${STM32F407_LINKER_OPTION})
 
 # # Convert output to hex and binary
 add_custom_command(TARGET ${STM32F407F_TARGET}

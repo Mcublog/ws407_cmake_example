@@ -43,6 +43,5 @@ void application(void)
         io_gpio_led(led);
         led ^= true;
         LOG_INFO("working...");
-
     }
 }

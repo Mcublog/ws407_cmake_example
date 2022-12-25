@@ -1,5 +1,4 @@
-set(APP app)
-set(APP_FW app_fw)
+include(${PROJECT_SOURCE_DIR}/config/common.cmake)
 
 # Add includes dir
 include_directories(
@@ -9,13 +8,10 @@ include_directories(
 )
 
 # Common sources
-file(GLOB_RECURSE APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.c")
+file(GLOB_RECURSE APP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 
 # region FW lib
 add_library(${APP_FW} STATIC ${APP_SOURCES})
-
-get_property(ARM_NONE_EABI_FLAGS GLOBAL PROPERTY ARM_NONE_EABI_FLAGS_PROPERTY)
-# message(ARM_NONE_EABI_FLAGS="${ARM_NONE_EABI_FLAGS}")
 
 # endregion
 #
