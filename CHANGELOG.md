@@ -1,7 +1,27 @@
 # Changelog
 
+## 0.4.0 (2022-12-25)
+
+#### New Features
+
+* :sparkles: added led gpio
+#### Fixes
+
+* (mcu): :sparkles: fix flash script
+#### Refactorings
+
+* (mcu): :building_construction: changed global property to cmake direct include
+#### Others
+
+* :sparkles: ci started
+
+Full set of changes: [`0.3.0...0.4.0`](https://github.com/Mcublog/ws407_cmake_example/compare/0.3.0...0.4.0)
+
 ## 0.3.0 (2022-10-27)
 
+#### New Features
+
+* (desktop): :sparkles: test example added
 #### Fixes
 
 * (mcu): :sparkles: added rtt lib
@@ -11,7 +31,12 @@
 
 * moved common code to separate config files
 
-Full set of changes: [`0.2.1...0.3.0`](https://github.com/Mcublog/ws407_cmake_example/compare/0.2.1...0.3.0)
+Full set of changes: [`0.2.2...0.3.0`](https://github.com/Mcublog/ws407_cmake_example/compare/0.2.2...0.3.0)
+
+## 0.2.2 (2022-10-25)
+
+
+Full set of changes: [`0.2.1...0.2.2`](https://github.com/Mcublog/ws407_cmake_example/compare/0.2.1...0.2.2)
 
 ## 0.2.1 (2022-10-25)
 
