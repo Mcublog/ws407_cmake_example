@@ -14,3 +14,7 @@ add_executable(${COMMON_TYPES_TARGET} ${TEST_SOURCES})
 
 # Include paths
 target_include_directories(${COMMON_TYPES_TARGET} PRIVATE ${APP_DIRS} ${DESKTOP_INCLUDE_DIR})
+
+# Added test
+add_test(NAME ${COMMON_TYPES_TARGET}
+         COMMAND ${COMMON_TYPES_TARGET})
