@@ -22,9 +22,7 @@ message("MCU target: "              ${STM32F407F_TARGET})
 
 project(ws407_cmake_example VERSION 0.3.0 LANGUAGES C CXX ASM)
 
-add_subdirectory(app)
 add_subdirectory(targets)
-add_subdirectory(libs)
 add_subdirectory(test)
 
 # Added color compiler output
@@ -38,38 +36,8 @@ endif()
 add_definitions(-DprojCOVERAGE_TEST=0)
 add_definitions(-D_WINDOWS_)
 
-# region DESKTOP APP
-
-# Link libs
-target_link_libraries(${DESKTOP_TARGET} app)
-
-# Include paths
-target_include_directories(${DESKTOP_TARGET} PRIVATE
-    ${APP_DIR}
-)
-# endregion
-
-# region STM32F407F_TARGET
-
-# Added app lib
-target_link_libraries(${STM32F407F_TARGET} app_fw)
-target_link_libraries(${STM32F407F_TARGET} rtt)
-
-# Include paths
-target_include_directories(${STM32F407F_TARGET} PRIVATE
-    ${APP_DIRS}
-    ${RTT_INCLUDE_DIRS}
-)
-
-# endregion
-
 # region Tests
-
-# Added app lib
-target_link_libraries(${COMMON_TYPES_TARGET} app)
-
-add_test(NAME common_types_test
-         COMMAND common_types_test)
-
+add_test(NAME ${COMMON_TYPES_TARGET}
+         COMMAND ${COMMON_TYPES_TARGET})
 enable_testing()
 # endregion

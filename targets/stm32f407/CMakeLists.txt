@@ -5,12 +5,13 @@ include(${PROJECT_SOURCE_DIR}/config/mcu.cmake)
 file(GLOB_RECURSE HAL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/*.s
+
 )
 
+file(GLOB_RECURSE APP_SOURCES ${APP_DIR}/*.c)
+
 # Build lib
-add_executable(${STM32F407F_TARGET} ${HAL_SOURCES})
-add_dependencies(${STM32F407F_TARGET} ${RTT_LIB})
-add_dependencies(${STM32F407F_TARGET} ${APP_FW})
+add_executable(${STM32F407F_TARGET} ${HAL_SOURCES} ${APP_SOURCES} ${RTT_SOURCES})
 
 # Include paths
 target_include_directories(${STM32F407F_TARGET} PRIVATE ${HAL_INCLUDE_DIRS} ${APP_DIRS} ${RTT_INCLUDE_DIRS})
