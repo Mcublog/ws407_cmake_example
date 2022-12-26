@@ -2,7 +2,7 @@
     "version": 4,
     "configurations": [
         {
-            "name": "SES Project",
+            "name": "WS407",
             "includePath": [
                 "${workspaceFolder}/app/**",
                 "${workspaceFolder}/**"
