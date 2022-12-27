@@ -30,6 +30,7 @@ LOG_INFO("Build type:......." ${CMAKE_BUILD_TYPE})
 LOG_INFO("Desktop target:..." ${DESKTOP_TARGET})
 LOG_INFO("MCU target:......." ${STM32F407F_TARGET})
 
+add_subdirectory(config)
 add_subdirectory(targets)
 
 # Added color compiler output
