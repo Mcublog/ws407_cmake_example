@@ -1,11 +1,5 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
-    "SES_PROJECT_NAME": "ProjectName",
-    "SES_PROJECT_F407": "${config:SES_PROJECT_NAME}F407",
-    "command-runner.commands": {
-        "Open: SES": "emStudio SES/${config:SES_PROJECT_NAME}.emProject &",
-        "Open: RTT Viewer": "JLinkRTTViewer &"
-    },
+    "C_Cpp.errorSquiggles": "disabled",
     "doxdocgen.generic.authorEmail": "viacheslav@mcublog.ru",
     "doxdocgen.generic.authorName": "Viacheslav",
     "doxdocgen.file.copyrightTag": [

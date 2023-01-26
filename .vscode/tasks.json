@@ -1,62 +1,42 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "cmake",
-			"label": "CMake: clean rebuild: ws407_fw",
-			"command": "cleanRebuild",
-			"targets": [
-				"ws407_fw"
-			],
-			"group": "build",
-			"problemMatcher": [],
-			"detail": "CMake template clean rebuild task"
-		},
-		{
-			"type": "cmake",
-			"label": "CMake: clean rebuild: ws407_desktop",
-			"command": "build",
-			"targets": [
-				"ws407_desktop"
-			],
-			"group": "build",
-			"problemMatcher": [],
-			"detail": "CMake template build task"
-		},
-		{
-			"type": "shell",
-			"label": "Build Project",
-			"command": "cmake --build . --config Debug  --target ws407_fw --clean-first",
-			"options": {
-				"cwd": "${workspaceFolder}/build"
-			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": {
-				"base": "$gcc",
-				"fileLocation": [
-					"relative",
-					"${workspaceFolder}/build"
-				]
-			}
-		},
-		{
-			"type": "shell",
-			"label": "Debug: Run RTT",
-			"command": "t",
-			"args": [
-				"JLinkRTTClient"
-			],
-			"presentation": {
-				"reveal": "never",
-				"echo": true
-			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cmake",
+            "label": "CMake: build active target",
+            "command": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: clean rebuild active",
+            "command": "cleanRebuild",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Debug: Run RTT",
+            "command": "t",
+            "args": [
+                "JLinkRTTClient"
+            ],
+            "presentation": {
+                "reveal": "never",
+                "echo": true
+            },
+            "group": {
+                "kind": "build",
+            }
+        }
+    ]
 }

@@ -22,7 +22,7 @@ include(config/desktop.cmake)
 include(config/utils.cmake)
 # endregion
 
-project(ws407_cmake_example VERSION 0.4.1 LANGUAGES C CXX ASM)
+project(ws407_cmake_example VERSION 0.5.0 LANGUAGES C CXX ASM)
 
 LOG_INFO("Version:.........." ${CMAKE_PROJECT_VERSION})
 LOG_INFO("Host system:......" ${CMAKE_SYSTEM_NAME})
@@ -30,6 +30,7 @@ LOG_INFO("Build type:......." ${CMAKE_BUILD_TYPE})
 LOG_INFO("Desktop target:..." ${DESKTOP_TARGET})
 LOG_INFO("MCU target:......." ${STM32F407F_TARGET})
 
+add_subdirectory(config)
 add_subdirectory(targets)
 
 # Added color compiler output

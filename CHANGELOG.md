@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0 (2023-01-26)
+
+#### New Features
+
+* :art: added version generation by cmake
+#### Others
+
+* :recycle: cleanup task list
+
+Full set of changes: [`0.4.0...0.5.0`](https://github.com/Mcublog/ws407_cmake_example/compare/0.4.0...0.5.0)
+
 ## 0.4.0 (2022-12-25)
 
 #### New Features
