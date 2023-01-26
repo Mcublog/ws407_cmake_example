@@ -7,9 +7,9 @@
         {
             "type": "cortex-debug",
             "request": "launch",
-            "name": "Debug: ws407_fw",
+            "name": "Debug: MCU",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/targets/stm32f407/ws407_fw",
+            "executable": "${command:cmake.launchTargetPath}",
             "servertype": "jlink",
             "device": "STM32F407VE",
             "interface": "swd",
@@ -20,8 +20,15 @@
             "serverArgs": [
                 "-gui"
             ],
-            "preLaunchTask": "Build Project",
-            "showDevDebugOutput":"raw"
-        }
+            "preLaunchTask": "CMake: build active target",
+            // "showDevDebugOutput":"raw"
+            // "preRestartCommands": [
+            //     "file ./build/bootloader/f205_boot",
+            //     "load",
+            //     "add-symbol-file ./build/pirit_2f/f205_fw 0x08004004",
+            //     "enable breakpoint",
+            //     "monitor reset"
+            //   ]
+        },
     ]
 }
