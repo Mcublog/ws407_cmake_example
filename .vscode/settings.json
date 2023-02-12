@@ -13,5 +13,6 @@
     ],
     "files.associations": {
         "common_type.h": "c"
-    }
+    },
+    "cmake.generator": "Unix Makefiles"
 }
