@@ -8,6 +8,7 @@
  * @copyright Viacheslav mcublog (c) 2023
  *
  */
+#include <sys/times.h>
 #include <time.h>
 //>>---------------------- Log control
 #define LOG_MODULE_NAME timesys
@@ -27,12 +28,12 @@
  * @return clock_t
  */
 __attribute__((__used__))
-clock_t _times_r(struct _reent *r, struct tms *t)
+clock_t
+_times_r(struct _reent *r, struct tms *t)
 {
     return 1000;
 }
 
-/
 /**
  * @brief
  *
@@ -40,7 +41,8 @@ clock_t _times_r(struct _reent *r, struct tms *t)
  * @return clock_t
  */
 __attribute__((__used__))
-clock_t _times(struct tms *buf)
+clock_t
+_times(struct tms *buf)
 {
     return 1000;
 }
