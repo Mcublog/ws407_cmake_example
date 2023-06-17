@@ -24,12 +24,13 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "application.h"
+#include "bme280.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME main
 #if defined(NDEBUG)
 #define LOG_MODULE_LEVEL (0)
 #else
-#define LOG_MODULE_LEVEL (3)
+#define LOG_MODULE_LEVEL (4)
 #endif
 #include "log_libs.h"
 //<<----------------------
@@ -52,18 +53,67 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+BME280_INTF_RET_TYPE i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf_ptr)
+{
+  LOG_DEBUG("read_i2c");
+  return BME280_E_COMM_FAIL;
+}
 
+BME280_INTF_RET_TYPE i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
+                                                    void *intf_ptr)
+{
+  LOG_DEBUG("i2c_write");
+  return BME280_E_COMM_FAIL;
+}
+
+void delay_us_i2c(uint32_t period, void *intf_ptr)
+{
+  LOG_DEBUG("delay_us_i2c");
+  return;
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+struct bme280_dev bmp280 =
+{
+    /*! Chip Id */
+    .chip_id = BME280_CHIP_ID,
 
+    /*! Interface Selection
+     * For SPI, intf = BME280_SPI_INTF
+     * For I2C, intf = BME280_I2C_INTF
+     */
+    .intf = BME280_I2C_INTF,
+
+    /*!
+     * The interface pointer is used to enable the user
+     * to link their interface descriptors for reference during the
+     * implementation of the read and write interfaces to the
+     * hardware.
+     */
+    .intf_ptr = (void*)&hi2c1,
+
+    /*! Variable to store result of read/write function */
+    .intf_rslt = BME280_OK,
+
+    /*! Read function pointer */
+    .read = i2c_read,
+
+    /*! Write function pointer */
+    .write = i2c_write,
+
+    /*! Delay function pointer */
+    .delay_us = delay_us_i2c
+
+    // /*! Trim data */
+    // struct bme280_calib_data calib_data;
+};
 /* USER CODE END 0 */
 
 /**
@@ -96,6 +146,9 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  int8_t err = bme280_init(&bmp280);
+  LOG_DEBUG("bme280_init: %d", err);
+
   application();
   /* USER CODE END 2 */
 
