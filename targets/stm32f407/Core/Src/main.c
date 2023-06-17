@@ -145,10 +145,10 @@ struct bme280_dev bmp280 =
         .write = i2c_write,
 
         /*! Delay function pointer */
-        .delay_us = delay_us_i2c
+        .delay_us = delay_us_i2c,
 
         // /*! Trim data */
-        // struct bme280_calib_data calib_data;
+        .calib_data = {0}
 };
 /* USER CODE END 0 */
 
