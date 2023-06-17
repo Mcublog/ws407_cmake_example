@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "application.h"
 #include "bme280.h"
+#include "dwt.h"
 //>>---------------------- Log control
 #define LOG_MODULE_NAME main
 #if defined(NDEBUG)
@@ -53,6 +54,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+static const uint32_t kI2CTimeoutMs = 10;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,21 +62,25 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 BME280_INTF_RET_TYPE i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf_ptr)
 {
-  LOG_DEBUG("read_i2c");
-  return BME280_E_COMM_FAIL;
+    HAL_StatusTypeDef err = HAL_I2C_Mem_Read((I2C_HandleTypeDef *)intf_ptr, (BME280_I2C_ADDR_PRIM << 1), reg_addr,
+                                             1, reg_data, len, kI2CTimeoutMs);
+    LOG_DEBUG("read_i2c: %d", err);
+    return err == HAL_OK ? BME280_OK : BME280_E_COMM_FAIL;
 }
 
 BME280_INTF_RET_TYPE i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                                                    void *intf_ptr)
+                               void *intf_ptr)
 {
-  LOG_DEBUG("i2c_write");
-  return BME280_E_COMM_FAIL;
+    HAL_StatusTypeDef err = HAL_I2C_Mem_Write(
+        (I2C_HandleTypeDef *)intf_ptr, (BME280_I2C_ADDR_PRIM << 1), reg_addr, 1, (uint8_t *)reg_data, len, kI2CTimeoutMs);
+    LOG_DEBUG("i2c_write: %d", err);
+    return err == HAL_OK ? BME280_OK : BME280_E_COMM_FAIL;
 }
 
 void delay_us_i2c(uint32_t period, void *intf_ptr)
 {
-  LOG_DEBUG("delay_us_i2c");
-  return;
+    LOG_DEBUG("delay_us_i2c: %d us", period);
+    dwt_delay_us(period);
 }
 /* USER CODE END PFP */
 
