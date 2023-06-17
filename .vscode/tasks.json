@@ -30,7 +30,7 @@
             "dependsOn": "CMake: build active target",
             "args": [
                 "-CommanderScript",
-                "scripts/flash_burn.jlink"
+                "${command:cmake.launchTargetPath}.jlink"
             ],
             "group": "test"
         },

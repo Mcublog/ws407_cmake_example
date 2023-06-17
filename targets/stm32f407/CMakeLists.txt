@@ -32,3 +32,5 @@ add_custom_command(TARGET ${STM32F407F_TARGET}
     COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex -I elf32-littlearm ${STM32F407F_TARGET} ${STM32F407F_TARGET}.hex
     COMMAND ${CMAKE_OBJCOPY} ARGS -O binary -I elf32-littlearm ${STM32F407F_TARGET} ${STM32F407F_TARGET}.bin
 )
+
+build_jlink_script(${STM32F407F_TARGET})
